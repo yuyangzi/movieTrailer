@@ -1,0 +1,28 @@
+{
+  "name": "movie-trailer",
+  "version": "0.0.1",
+  "description": "一个电影预告网站",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuyangzi/movieTrailer.git"
+  },
+  "keywords": [
+    "movie",
+    "trailer"
+  ],
+  "author": "yuyang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuyangzi/movieTrailer/issues"
+  },
+  "homepage": "https://github.com/yuyangzi/movieTrailer#readme",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-logger": "^3.1.0"
+  }
+}
