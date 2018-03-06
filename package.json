@@ -23,6 +23,8 @@
   "homepage": "https://github.com/yuyangzi/movieTrailer#readme",
   "dependencies": {
     "koa": "^2.5.0",
-    "koa-logger": "^3.1.0"
+    "koa-logger": "^3.1.0",
+    "koa-views": "^6.1.4",
+    "pug": "^2.0.0"
   }
 }
