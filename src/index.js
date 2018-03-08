@@ -5,13 +5,10 @@ const Koa = require('koa');
 const koaViews = require('koa-views');
 
 
-// 导入模板文件
-const {normal} = require('../template/index');
-
 // new 一个Koa实例
 const app = new Koa();
 
-app.use(koaViews(path.resolve(__dirname, '../views'), {
+app.use(koaViews(path.resolve(__dirname, './views'), {
     extension: 'pug',
 }));
 
