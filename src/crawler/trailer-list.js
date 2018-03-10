@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const url = `https://movie.douban.com/tag/#/?sort=R&range=6,10&tags=`;
+const url = 'https://movie.douban.com/tag/#/?sort=R&range=6,10&tags=';
 
 // 延时函数
 const sleep = time => new Promise(resolve => {
@@ -8,7 +8,7 @@ const sleep = time => new Promise(resolve => {
 });
 
 (async () => {
-    console.log("Start visit the target page");
+    console.log('Start visit the target page');
 
     // 创建一个浏览器
     const browser = await puppeteer.launch({
@@ -56,7 +56,7 @@ const sleep = time => new Promise(resolve => {
                     rate,
                     poster
                 });
-            })
+            });
         }
 
         return links;
@@ -64,6 +64,8 @@ const sleep = time => new Promise(resolve => {
 
     browser.close();
 
-    console.log(result);
+    // console.log(result);
+    process.send({result});
+    process.exit(0);
 
 })();
