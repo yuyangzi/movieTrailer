@@ -25,6 +25,7 @@
     "koa": "^2.5.0",
     "koa-logger": "^3.1.0",
     "koa-views": "^6.1.4",
+    "mongoose": "^5.0.10",
     "nanoid": "^1.0.2",
     "pug": "^2.0.0",
     "puppeteer": "^1.1.1",

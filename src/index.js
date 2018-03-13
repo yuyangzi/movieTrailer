@@ -4,6 +4,11 @@ const Koa = require('koa');
 // 导入koa-views中间件, 管理模板引擎
 const koaViews = require('koa-views');
 
+const connect = require('./database/init');
+
+(() => {
+    connect();
+})();
 
 // new 一个Koa实例
 const app = new Koa();
