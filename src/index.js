@@ -12,11 +12,11 @@ app.use(koaViews(path.resolve(__dirname, './views'), {
     extension: 'pug',
 }));
 
-app.use(async (ctx, next) => {
+app.use(async (ctx) => {
     await ctx.render('index', {
         you: '李白',
         me: '王宜明'
-    })
+    });
 });
 
 // 指定端口
