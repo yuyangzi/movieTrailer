@@ -1,13 +1,23 @@
 const path = require('path');
-
 const Koa = require('koa');
 // 导入koa-views中间件, 管理模板引擎
 const koaViews = require('koa-views');
 
-const connect = require('./database/init');
+const mongoose = require('mongoose');
 
-(() => {
-    connect();
+const {connect, initSchema} = require('./database/init');
+
+(async () => {
+    await connect();
+
+    initSchema();
+
+    const Movie = mongoose.model('Movie');
+
+    const movie = await Movie.find({});
+
+    console.log(movie);
+
 })();
 
 // new 一个Koa实例

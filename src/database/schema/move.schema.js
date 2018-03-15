@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Mixed类型代表可以存储任何类型的数据
-const Mixed = Schema.Types.Mixed;
+const {
+    Mixed,
+    ObjectId
+} = Schema.Types;
 
 // 创建move模型
 const MoveSchema = new Schema({
@@ -13,6 +16,10 @@ const MoveSchema = new Schema({
     moveId: {
         type: String,
         unique: true,
+    },
+    movies: {
+        type: ObjectId,
+        ref: 'Category'
     },
     // 评分
     rate: Number,
@@ -66,4 +73,4 @@ MoveSchema.pre('save', next => {
     next();
 });
 
-mongoose.model('Move', MoveSchema);
+mongoose.model('Movie', MoveSchema);

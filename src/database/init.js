@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
-
 const db = 'mongodb://localhost/moveTrailer';
+
+const glob = require('glob');
+
+const path = require('path');
 
 // 将node全局变量Promise赋值给mongoose.Promise
 mongoose.Promise = global.Promise;
 
-module.exports = () => {
+const connect = () => {
 
     let maxConnectTimes = 0;
 
@@ -38,16 +41,17 @@ module.exports = () => {
 
         // 监听mongoDB的打开事件
         mongodb.once('open', () => {
-            // const Dog = mongoose.model('Dog', {name: String});
-
-            // const doga = new Dog({name: '阿法尔'});
-
-            // doga.save().then(() => {
-            //     console.log('OK');
-            // });
-
             console.log('MongoDB Connected succesfully!');
             resolve();
         });
     });
+};
+
+const initSchema = () => {
+    glob.sync(path.resolve(__dirname, './schema', '**/*.js')).forEach(require);
+};
+
+module.exports = {
+    connect,
+    initSchema,
 };
