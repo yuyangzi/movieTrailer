@@ -3,21 +3,17 @@ const Koa = require('koa');
 // 导入koa-views中间件, 管理模板引擎
 const koaViews = require('koa-views');
 
-const mongoose = require('mongoose');
-
-const {connect, initSchema} = require('./database/init');
+const {connect, initSchema, initAdmin} = require('./database/init');
 
 (async () => {
     await connect();
-
     initSchema();
+    await initAdmin();
 
-    const Movie = mongoose.model('Movie');
-
-    const movie = await Movie.find({});
-
-    console.log(movie);
-
+    // require('./tasks/movie');
+    // require('./tasks/api');
+    // require('./tasks/trailer');
+    // require('./tasks/qiniu');
 })();
 
 // new 一个Koa实例

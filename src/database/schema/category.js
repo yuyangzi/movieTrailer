@@ -7,9 +7,8 @@ const Schema = mongoose.Schema;
 // Mixed类型代表可以存储任何类型的数据
 const ObjectId = Schema.Types.ObjectId;
 
-// 创建move模型
+// 创建category模型
 const CategorySchema = new Schema({
-
     name: {
         unique: true,
         type: String,
@@ -33,7 +32,7 @@ const CategorySchema = new Schema({
 });
 
 // 在存储数据之前调用的函数
-CategorySchema.pre('save', next => {
+CategorySchema.pre('save', function(next) {
     if (this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now();
     } else {

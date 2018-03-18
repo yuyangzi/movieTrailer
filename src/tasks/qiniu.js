@@ -7,6 +7,11 @@ const nanoid = require('nanoid');
 // 导入配置文件
 const config = require('../config/index');
 
+// 导入mongoose
+const mongoose = require('mongoose');
+
+// 获取Movie集合
+const Movie = mongoose.model('Movie');
 
 const bucket = config.qiniu.bucket;
 
@@ -35,37 +40,40 @@ const uploadToQiniu = async (url, key) => {
 };
 
 (async () => {
-    const moves = [{
-        video: 'http://vt1.doubanio.com/201803122129/7430aef5ac82f772d16980c4d83615e6/view/movie/M/302250688.mp4',
-        doubanId: '3078549',
-        poster: 'https://img3.doubanio.com/view/photo/l_ratio_poster/public/p2509632710.jpg',
-        cover: 'https://img3.doubanio.com/img/trailer/medium/2509585732.jpg?'
-    }];
+    const moves = await Movie.find({
+        $or: [
+            {
+                videoKey: {
+                    $exists: false
+                }
+            },
+            {
+                videoKey: null
+            },
+            {
+                videoKey: ''
+            },
+        ]
+    });
 
-    moves.map(async move => {
-        if (move.video && !move.key) {
+    for (let i = 0; i < moves.length; i++) {
+        const move = moves[i];
+        if (move.video && !move.videoKey) {
             try {
+                console.log('开始上传video');
                 let videData = await uploadToQiniu(move.video, nanoid() + '.mp4');
+                console.log('开始上传cover');
                 let coverData = await uploadToQiniu(move.cover, nanoid() + '.png');
-                let posterData = await uploadToQiniu(move.poster, nanoid() + '.png');
+                // console.log('开始上传poster');
+                // let posterData = await uploadToQiniu(move.poster, nanoid() + '.png');
 
-
-                if (videData.key) {
-                    move.videoKey = videData.key;
-                }
-
-                if (coverData.key) {
-                    move.coverKey = coverData.key;
-                }
-
-                if (posterData.key) {
-                    move.posterKey = posterData.key;
-                }
-                console.log(move);
+                if (videData.key) move.videoKey = videData.key;
+                if (coverData.key) move.coverKey = coverData.key;
+                // if (posterData.key) move.posterKey = posterData.key;
+                await move.save();
             } catch (err) {
                 console.log(err);
             }
         }
-    });
-
+    }
 })();

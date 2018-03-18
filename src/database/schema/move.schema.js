@@ -10,17 +10,17 @@ const {
     ObjectId
 } = Schema.Types;
 
-// 创建move模型
-const MoveSchema = new Schema({
+// 创建movie模型
+const MovieSchema = new Schema({
     // 电影ID
-    moveId: {
+    movieId: {
         type: String,
         unique: true,
     },
-    movies: {
+    category: [{
         type: ObjectId,
         ref: 'Category'
-    },
+    }],
     // 评分
     rate: Number,
     // 标题
@@ -42,7 +42,7 @@ const MoveSchema = new Schema({
     // 原始标题
     rawTitle: String,
     // 电影类型
-    moveTypes: [String],
+    movieTypes: [String],
     // 上映日期
     pubdate: Mixed,
     // 上映年份
@@ -64,7 +64,7 @@ const MoveSchema = new Schema({
 });
 
 // 在存储数据之前调用的函数
-MoveSchema.pre('save', next => {
+MovieSchema.pre('save', function (next) {
     if (this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now();
     } else {
@@ -73,4 +73,4 @@ MoveSchema.pre('save', next => {
     next();
 });
 
-mongoose.model('Movie', MoveSchema);
+mongoose.model('Movie', MovieSchema);

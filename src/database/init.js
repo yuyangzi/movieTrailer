@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const db = 'mongodb://localhost/moveTrailer';
+const db = 'mongodb://localhost/movieTrailer';
 
 const glob = require('glob');
 
@@ -8,6 +8,7 @@ const path = require('path');
 // 将node全局变量Promise赋值给mongoose.Promise
 mongoose.Promise = global.Promise;
 
+// 连接数据库
 const connect = () => {
 
     let maxConnectTimes = 0;
@@ -47,11 +48,32 @@ const connect = () => {
     });
 };
 
+// 初始化定义的所有Schema
 const initSchema = () => {
     glob.sync(path.resolve(__dirname, './schema', '**/*.js')).forEach(require);
+};
+
+// 初始化管理员
+const initAdmin = async () => {
+    console.log('新建1');
+    const User = mongoose.model('User');
+    const _user = await User.findOne({
+        userName: 'yuyangzi'
+    });
+    console.log(_user);
+    if (!_user) {
+        const user = new User({
+            userName: 'yuyangzi',
+            email: 'yuyangzi@123.com',
+            password: '123456789'
+        });
+        console.log('新建2');
+        user.save();
+    }
 };
 
 module.exports = {
     connect,
     initSchema,
+    initAdmin,
 };
