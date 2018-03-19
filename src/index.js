@@ -3,13 +3,19 @@ const Koa = require('koa');
 // 导入koa-views中间件, 管理模板引擎
 const koaViews = require('koa-views');
 
-const {connect, initSchema, initAdmin} = require('./database/init');
+const {
+    connect,
+    initSchema,
+    initAdmin
+} = require('./database/init');
+
+// 导入路由模块
+const {router} = require('./routes');
 
 (async () => {
     await connect();
     initSchema();
     await initAdmin();
-
     // require('./tasks/movie');
     // require('./tasks/api');
     // require('./tasks/trailer');
@@ -18,6 +24,9 @@ const {connect, initSchema, initAdmin} = require('./database/init');
 
 // new 一个Koa实例
 const app = new Koa();
+
+// 注册路由中间件
+// app.use(router.routes()).use(router.allowedMethods());
 
 app.use(koaViews(path.resolve(__dirname, './views'), {
     extension: 'pug',

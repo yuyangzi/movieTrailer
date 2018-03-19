@@ -55,12 +55,10 @@ const initSchema = () => {
 
 // 初始化管理员
 const initAdmin = async () => {
-    console.log('新建1');
     const User = mongoose.model('User');
     const _user = await User.findOne({
         userName: 'yuyangzi'
     });
-    console.log(_user);
     if (!_user) {
         const user = new User({
             userName: 'yuyangzi',
