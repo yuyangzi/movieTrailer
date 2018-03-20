@@ -6,11 +6,11 @@ const path = require('path');
 const symbolPrefix = Symbol('prefix');
 const routerMap = new Map();
 
-export class Route {
+class Route {
     constructor(app, apiPath) {
         this.app = app;
         this.apiPath = apiPath;
-        this.router = new this.router();
+        this.router = new Router();
     }
 
     init () {
@@ -30,7 +30,7 @@ export class Route {
         }
 
         // 在koa 实例上注册配置好的路由实例
-        this.app.use(this.router.routers());
+        this.app.use(this.router.routes());
         this.app.use(this.router.allowedMethods());
     }
 }
@@ -54,8 +54,8 @@ const normalizePath = path => path.startsWith('/') ? path : `/${path}`;
  * @param {*} config: {method, path};
  * @returns decorator
  */
-const router = config => (tar, key, descriptor) => {
-    coonfig.path = normalizePath(config.path);
+const router = config => (target, key, descriptor) => {
+    config.path = normalizePath(config.path);
     routerMap.set({target,...config}, target[key])
 }
 
@@ -99,6 +99,7 @@ const all = path => router({
 })
 
 module.exports = {
+    Route,
     controller,
     get,
     post,

@@ -1,3 +1,9 @@
+import {
+    getAllMovies,
+    getMovieDetail,
+    getRelativeMovies
+} from '../service/movie';
+
 // 导入路由模块
 const Router = require('koa-router');
 // 导入mongoose
@@ -15,11 +21,13 @@ const {
 export class MoviesController {
     @get('/')
     async getMovies(ctx, next) {
-        // 获取MovieSchema
-        const Movie = mongoose.model('Movie');
-        const movies = await Movie.find({}).sort({
-            'meta.createdAt': -1
-        });
+
+        const {
+            type,
+            year
+        } = ctx.query;
+
+        const movies = await getAllMovies(type, year);
 
         ctx.body = {
             movies
@@ -28,15 +36,17 @@ export class MoviesController {
 
     @get('/:id')
     async getMoviesDetail(ctx, next) {
-        console.log('/movies/detail/');
-        // 获取MovieSchema
-        const Movie = mongoose.model('Movie');
         const id = ctx.params.id;
-        const movie = await Movie.findOne({
-            _id: id
-        });
+        const movie = await getMovieDetail(id);
+        const relativeMovies = await getRelativeMovies(movie);
+
         ctx.body = {
-            movie
+            data: {
+                movie,
+                relativeMovies,
+            },
+            code: 0,
+            message: '',
         };
     }
 }

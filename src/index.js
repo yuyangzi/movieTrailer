@@ -9,8 +9,26 @@ const {
     initAdmin
 } = require('./database/init');
 
-// 导入路由模块
-const {router} = require('./routes');
+// 导入ramda库
+const R = require('ramda');
+
+const MIDDLEWARES = ['router'];
+
+// // 导入路由模块
+// const {
+//     router
+// } = require();
+
+
+const useMiddlewares = (app) => {
+    R.map(
+        R.compose(
+            R.forEachObjIndexed(initWith => initWith(app)),
+            require,
+            name => path.resolve(__dirname, `./middlewares/${name}`),
+        )
+    )(MIDDLEWARES)
+}
 
 (async () => {
     await connect();
@@ -20,24 +38,12 @@ const {router} = require('./routes');
     // require('./tasks/api');
     // require('./tasks/trailer');
     // require('./tasks/qiniu');
+
+    // new 一个Koa实例
+    const app = new Koa();
+
+    await useMiddlewares(app);
+
+    // 指定端口
+    app.listen(4800);
 })();
-
-// new 一个Koa实例
-const app = new Koa();
-
-// 注册路由中间件
-// app.use(router.routes()).use(router.allowedMethods());
-
-app.use(koaViews(path.resolve(__dirname, './views'), {
-    extension: 'pug',
-}));
-
-app.use(async (ctx) => {
-    await ctx.render('index', {
-        you: '李白',
-        me: '王宜明'
-    });
-});
-
-// 指定端口
-app.listen(4800);
